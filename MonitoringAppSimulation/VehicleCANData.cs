@@ -62,9 +62,47 @@ namespace MonitoringAppSimulation
         public double Lng { get; set; }
     }
 
+    public enum ComponentType
+    {
+        ComponentUI = 0,
+        ComponentAroMgr = 1,
+        ComponentCameraMgr = 2,
+        ComponentVehicleMgr = 3,
+        ComponentARMgr = 4,
+        ComponentVRMgr = 5,
+        CoompoentServer = 6,
+        CompoentMotion = 7,
+        ComponentVehicleCmd = 8,
+        ComponentPAD = 9,
+    }
+
+    public enum MessageAckType
+    {
+        NoAck = 0,
+        NeedAck = 1,
+        NeedResponse = 2
+    }
+
     // definition of a message (marked up with Protobuf attributes)
     [ProtoContract]
-    public class VehicleCANData
+    [ProtoInclude((int)206, typeof(VehicleCANData))]
+    public class MsgCommon
+    {
+        [ProtoMember(1)]
+        public int Id { get; set; }
+        [ProtoMember(2)]
+        public ComponentType From { get; set; }
+        [ProtoMember(3)]
+        public ComponentType To { get; set; }
+        [ProtoMember(4)]
+        public int? Sequence { get; set; }
+        [ProtoMember(5)]
+        public MessageAckType AckType { get; set; }
+    }
+
+    // definition of a message (marked up with Protobuf attributes)
+    [ProtoContract]
+    public class VehicleCANData : MsgCommon
     {
         [ProtoMember(1)]
         public int VehicleSpeed { get; set; }
