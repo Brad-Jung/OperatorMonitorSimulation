@@ -9,6 +9,7 @@ using System.IO;
 using ProtoBuf;
 using System.Threading;
 using System.Windows.Forms;
+using Aro.Message;
 
 namespace MonitoringAppSimulation
 {
