@@ -1,0 +1,131 @@
+syntax = "proto3";
+
+package Aro.Message;
+
+enum GearModeEnum
+{
+    ModeP = 0;
+    ModeR = 1;
+    ModeN = 2;
+    ModeD = 3;
+}
+enum OnOffEnum
+{
+    ModeOff = 0;
+    ModeOn = 1;
+}
+
+enum DrivingReadyEnum
+{
+    DrivingNotReady = 0;
+    DrivingReady = 1;
+}
+
+enum DirectionSignalEnum
+{
+    DirectionNormal = 0;
+    DirectionLeft = 1;
+    DirectionRight = 2;
+}
+
+enum DrivingModeEnum
+{
+    DrivingManual = 0;
+    DrivingAutonomous = 1;
+}
+
+enum CabinDoorStatus
+{
+    DoorClosed = 0;
+    DoorOpening = 1;
+    DoorClosing = 2;
+    DoorOpened = 3;
+}
+
+message GPSPosition
+{
+    double Lat = 1;
+    double Lng = 2;
+}
+
+enum GpsStatusEnum
+{
+    GpsNormal = 0;
+    GpsAbnormal = 1;
+}
+
+enum ComponentType
+{
+    Component_UI = 0;
+    ComponentAroMgr = 1;
+    ComponentCameraMgr = 2;
+    ComponentVehicleMgr = 3;
+}
+
+enum MessageAckType
+{
+    NoAck = 0;
+    NeedAck = 1;
+    NeedResponse = 2;
+}
+
+message VehicleCANData 
+{
+    // common header fields start
+    int32 Id = 1;
+    ComponentType From = 2;
+    ComponentType To = 3;
+    int32  Sequence = 4;
+    MessageAckType  AckType = 5;
+    // common header fields end
+
+    int32 VehicleSpeed = 6;  // 주행속도 0~50 kph
+    GearModeEnum GearMode = 7; //기어정보 P,R,N,D
+
+    DrivingReadyEnum DrivingReady = 8; // 주행가능 상태
+    int32 DrivingHour = 9;  // 누적 주행시간 (Hour) 0~99999
+    int32 DrivingMinutes = 10; // 누적 주행시간 (Min) 0~59
+    int32 DrivingDistance = 11;  // 누적 주행 거리 (Km) 0~99999
+
+    int32 BatteryRemains = 12; // 배터리 잔량(%)  0~100
+    OnOffEnum BatteryCharing = 13; // 배터리 충전 상태 (on/off)
+    int32 AvailableDistance = 14;  //남은 주행 가능 거리 (Km)
+
+    OnOffEnum TailLamp = 15; // 미등
+    OnOffEnum FogLamp = 16; //안개등
+    OnOffEnum HeadLampHigh = 17; //상향등
+    OnOffEnum HeadLampLow = 18; //하향등
+    DirectionSignalEnum TurnSignalLamp = 19; //방향지시등
+    OnOffEnum EmergencyLamp = 20; //비상등
+
+    OnOffEnum EmergencySwitchMode = 21; // Emergency Switch 상태
+
+    OnOffEnum CabinCombineStatus = 22; //캐빈 결합 상태
+    DrivingModeEnum DrivingMode = 23; //주행 모드 :
+
+    int32 OutTemperature = 24; // 외기온도
+    int32 CabinClimate = 25;  // 캐빈 실내온도
+    CabinDoorStatus CabinDoorStatus = 26; // 캐빈 문열림 상태
+    OnOffEnum StopBellStatus = 27; //하차벨 상태
+    
+    int32 GpsTimeHour = 28;
+    int32 GpsTimeMinutes = 29;
+    GpsStatusEnum GpsStatus = 30;
+    GPSPosition GpsInfo = 31; // 현재 GPS 정보
+
+    int32 CurrentStation = 32; // 현재 정류장 번호
+
+    int32 DestinationStation = 33; // 정차할 정류장 위치 
+    int32 StationDistance = 34; // 정류장 남은 거리 meter
+    int32 IntersectionDistance = 35; //전방 교차로 거리 meter
+    int32 BumpDistance = 36; // 전방 방지턱 거리 meter
+
+    // 관제 서버 제공을 위한 추가 항목들
+    int32 Heading = 37;      // 조향각
+    int32 INSStatus = 38;    // INS 상태
+    int32 AVSensor = 39;     // AV Sensor 상태
+    int32 AVsw = 40;         // AV SW 상태(0: 정상, 1: 오류)
+    int32 AVError = 41;         // 삭제 예정
+    bool Moving = 42;        // 운행중 여부
+    // 공기압 상태?
+}
